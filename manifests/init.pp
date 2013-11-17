@@ -46,6 +46,7 @@ class bro(
   }
   $if_dirs = [
     "$basedir",
+    "$basedir/bin",
     "$basedir/share",
     "$basedir/share/bro",
   ]
