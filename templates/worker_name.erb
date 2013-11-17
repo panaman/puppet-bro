@@ -1,0 +1,15 @@
+[<%= @host %>-<%= @int %>]
+type=worker
+host=<%= @host %>
+interface=<%= @int %>
+<% if @method != 'UNSET' -%>
+lb_method=<%= @method %>
+<% end -%>
+<% if @cpus  != 'UNSET' -%>
+lb_procs=<%= @bro_cpu_count %>
+pin_cpus=<%= @bro_cpu_pin %>
+<% end -%>
+<% if @procs != 'UNSET' -%>
+lb_procs=<%= @procs %>
+<% end -%>
+
