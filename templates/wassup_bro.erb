@@ -1,21 +1,132 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+basedir='<%= @basedir %>'
+def bro_start
+  %x(<%= @basedir %>/bin/broctl start 2>&1)
+end
+def bro_stop
+  %x(<%= @basedir %>/bin/broctl stop 2>&1)
+end
+def bro_install 
+  %x(<%= @basedir %>/bin/broctl install 2>&1)
+end
+def bro_update
+  %x(<%= @basedir %>/bin/broctl update 2>&1)
+end
+def bro_reload
+  %x(<%= @basedir %>/bin/broctl restart 2>&1)
+end
+def bro_cron
+  %x(<%= @basedir %>/bin/broctl cron 2>&1)
+end
+def bro_status
+  cache_file_dir='/dev/shm'
+  cache_file=cache_file_dir+'/bro_state.txt'
+  %x(<%= @basedir %>/bin/broctl status 2>&1)
+  if $?.exitstatus != 0
+    puts "Bro is stopped"
+    status = '1'
+  else
+    puts "Bro is running"
+    status = '0'
+  end
+  File.open(cache_file, 'w') { |file| file.write(status) }
+end
+
+def bro_state
+  cache_file_dir='/dev/shm'
+  cache_file=cache_file_dir+'/bro_state.txt'
+  if File::exist?(cache_file) then
+    status=File.read(cache_file)
+    puts "#{status}"
+  else
+    %x(<%= @basedir %>/bin/broctl cron 2>&1)
+    %x(<%= @basedir %>/bin/broctl status 2>&1)
+    if $?.exitstatus != 0
+      status = 'stopped'
+    else
+      status = 'running'
+    end
+    File.open(cache_file, 'w') { |file| file.write(status) }
+    status=File.read(cache_file)
+    puts "#{status}"
+  end
+end
+
 state = ARGV[0]
 if state == 'status'
-  %x(<%= @basedir %>/bin/broctl status 2>&1)
-   if $?.exitstatus != 0
-     puts "Bro is stopped"
-   else
-     puts "Bro is running"
-   end
+  puts "Checking status..."
+  "#{bro_cron}"
+  "#{bro_status}"
+elsif state == nil
+  "#{bro_state}"
 elsif state == 'stop'
-  %x(<%= @basedir %>/bin/broctl stop 2>&1)
+  puts "Stopping Bro"
+  "#{bro_cron}"
+  "#{bro_stop}"
+  "#{bro_status}"
 elsif state == 'start'
-  %x(<%= @basedir %>/bin/broctl install 2>&1)
-  %x(<%= @basedir %>/bin/broctl start 2>&1)
+  "#{bro_cron}"
+  "#{bro_status}"
+  if $?.exitstatus != 0
+    puts "Updating Bro configuration"
+    "#{bro_install}"
+    sleep(1)
+    puts "Starting Bro"
+    "#{bro_start}"
+    "#{bro_status}"
+  end
 elsif state == 'restart'
-  %x(<%= @basedir %>/bin/broctl stop 2>&1)
-  %x(<%= @basedir %>/bin/broctl install 2>&1)
-  %x(<%= @basedir %>/bin/broctl start 2>&1)
+  puts "Checking status..."
+  "#{bro_cron}"
+  "#{bro_status}"
+  if $?.exitstatus == 0
+    puts "Stopping Bro"
+    "#{bro_stop}"
+    sleep(2)
+    puts "Updating Bro configuration"
+    "#{bro_install}"
+    sleep (1)
+    puts "Starting Bro"
+    "#{bro_start}"
+    "#{bro_status}"
+  else
+    puts "Bro was not running... Starting Bro!"
+    "#{bro_start}"
+    "#{bro_status}"
+  end
+elsif state == 'reload'
+  puts "Checking status..."
+  "#{bro_cron}"
+  "#{bro_status}"
+  if $?.exitstatus != 0
+    puts "Bro was not running... Starting Bro!"
+    "#{bro_start}"
+    "#{bro_status}"
+  else
+    puts "Stopping and restarting Bro processing"
+    "#{bro_reload}"
+    "#{bro_status}"
+  end
+elsif state == 'update'
+  puts "Checking status..."
+  "#{bro_cron}"
+  "#{bro_status}"
+  if $?.exitstatus != 0
+    puts "Bro was not running... Starting Bro!"
+    "#{bro_start}"
+  else
+    puts "Updating node configuration"
+    "#{bro_update}"
+    "#{bro_status}"
+  end
+elsif state ==  "help"
+  puts "Usage: wassup_bro {status|start|stop|restart|reload|update}"
+  puts "  status  :shows if brow is running or stopped"
+  puts "  start   :installs new configs and starts bro"
+  puts "  stop    :stops bro"
+  puts "  restart :stops bro, installs new configs and starts bro"
+  puts "  reload  :stops and restarts bro processing"
+  puts "  update  :updates configuration of nodes on the fly"
 else
-  puts 'Invalid Command'
+  puts 'Invalid Command: require {status|start|stop|restart|reload|update}'
 end

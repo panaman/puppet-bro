@@ -1,3 +1,4 @@
 # Bro Network Config Managed by Puppet
-192.168.10.0/24
-192.168.11.0/24
+<% @network.each do |cidr| -%>
+<%= cidr %>
+<% end -%>
