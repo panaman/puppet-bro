@@ -67,7 +67,16 @@ class bro(
     source => [ "$localbro_custom","$localbro_default" ],
     notify => Service['wassup_bro'],
   }
-  
+  file { "$basedir/bin/bro_cron":
+    mode => '0755',
+    content => template('bro/bro_cron.erb'),
+  }
+  cron { 'bro_cron':
+    ensure  => $bro_present,
+    command => "$basedir/bin/bro_cron",
+    user    => '0',
+    minute  => '*/5',
+  }
   file { "$basedir/bin/wassup_bro":
     mode => '0755',
     content => template('bro/wassup_bro.erb'),
@@ -83,12 +92,6 @@ class bro(
     restart => $restart,
     stop    => $stop,
     require => File["$basedir/bin/wassup_bro"],
-  }
-  cron { 'bro_cron':
-    ensure  => $bro_present,
-    command => "$basedir/bin/broctl cron",
-    user    => '0',
-    minute  => '*/5',
   }
   $node_conf = "${basedir}/etc/node.cfg"
   if ($type == 'cluster') {
