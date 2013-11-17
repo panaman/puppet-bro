@@ -14,11 +14,9 @@ class bro::params {
   $manager      = $::hostname
   $interface    = $::hostint
   $worker       = $::hostname
-  $pfring       = 'false'
   $proxy        = $::hostname
   $pkg_ensure   = 'present'
   $pkg          = 'bro'
-  $worker1      = "$::hostname-$interface"
   $pkg_source   = 'bro.org'
   $type         = 'standalone'
   $network      = $::hostint_ipv4_cidr 
