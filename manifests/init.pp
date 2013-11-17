@@ -62,18 +62,16 @@ class bro(
     purge   => true,
     force   => true,
   }
-  if ( $mods == 'true' ) {
-    file { 'mods':
-      name    => "$basedir/share/bro/site/mods",
-      recurse => true,
-      purge   => true,
-      force   => true,
-      source  => "puppet:///modules/bro/mods",
-      notify  => Service['wassup_bro'],
-    }
-  } else {}
-  $localbro_default = "puppet:///modules/bro/localbro/local.bro.default"
-  $localbro_custom = "puppet:///modules/bro/localbro/local.bro.${hostname}"
+  file { 'scripts':
+    name    => "$basedir/share/bro/site/scripts",
+    recurse => true,
+    purge   => true,
+    force   => true,
+    source  => "puppet:///modules/bro/scripts",
+    notify  => Service['wassup_bro'],
+  }
+  $localbro_default = "puppet:///modules/bro/localbro/$sitepolicy"
+  $localbro_custom = "puppet:///modules/bro/localbro/local.bro.$::hostname"
   file { "$basedir/share/bro/site/local.bro":
     source => [ "$localbro_custom","$localbro_default" ],
     notify => Service['wassup_bro'],
