@@ -33,13 +33,24 @@ class bro(
   class {'bro::pkg':}
   class {'bro::broctl':}
   File {
-    ensure => present,
-    mode   => '0644',
-    owner  => '0',
-    group  => '0',
+    ensure  => present,
+    mode    => '0644',
+    owner   => '0',
+    group   => '0',
+    require => Exec['create_base'],
   }
-  file { $basedir:
-    ensure => directory,
+  exec { 'create_base':
+    command => "mkdir -p $basedir",
+    creates => $basedir,
+    path    => ['/bin','/sbin','/usr/sbin','/usr/bin'],
+  }
+  $if_dirs = [
+    "$basedir",
+    "$basedir/share",
+    "$basedir/share/bro",
+  ]
+  if ! defined_with_params(File[$if_dirs], {'ensure' => 'directory' }) {
+    file { $if_dirs: ensure => directory, }
   }
   $bro_dirs = [
     "$basedir/share/bro/site",
@@ -96,9 +107,10 @@ class bro(
   $node_conf = "${basedir}/etc/node.cfg"
   if ($type == 'cluster') {
     concat { $node_conf:
-      owner => '0',
-      group => '0',
-      mode  => '0644',
+      owner   => '0',
+      group   => '0',
+      mode    => '0644',
+      notify  => Service['wassup_bro'],
     }
     concat::fragment { 'node_conf_header':
       target  => $node_conf,
