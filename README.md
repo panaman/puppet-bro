@@ -1,5 +1,5 @@
-Bro NSM
-=======
+Bro NSM Puppet Module
+=====================
 Puppet module to manage a Bro Network Security Monitor. 
 (To learn more about Bro visit the organizations website: http://www.bro.org)
 
