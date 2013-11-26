@@ -10,5 +10,5 @@ project_page 'http://www.thunderpoop.com'
 ## Add dependencies, if any:
 dependency 'panaman/hostint', '>= 2.0.2'
 dependency 'panaman/tps', '>= 1.0.2'
-dependency 'puppet/concat', '>=1.0.0'
-dependency 'puppet/stdlib', '>=4.1.0'
+dependency 'puppetlabs/concat', '>=1.0.0'
+dependency 'puppetlabs/stdlib', '>=4.1.0'
