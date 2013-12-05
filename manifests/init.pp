@@ -67,6 +67,7 @@ class bro(
     purge   => true,
     force   => true,
     source  => "puppet:///modules/bro/scripts",
+    ignore  => '.git',
     notify  => Service['wassup_bro'],
   }
   $localbro_default = "puppet:///modules/bro/localbro/$sitepolicy"
