@@ -73,8 +73,8 @@ cpus ['1','4'] represents cpus 1,2,3,4 and will also place lb_procs value of 4.
   }
 ```
 ###Other Customizable Variables
-class { 'bro':}
 ```
+class { 'bro':
   $ensure       = 'running' # Toggle Bro on or off
   $pf_cid       = 'UNSET' # Customize Pfring Cluster ID
   $debug        = '0' # Toggle Debug on and off, 0 = Off and 1 = On
@@ -102,6 +102,7 @@ class { 'bro':}
     'Debian' => 'Bro-2.2-Linux-x86_64.deb',
   }
   $bro_url = 'http://www.bro.org/downloads/release'
+}
 ```
 ###Support
 Please log tickets and issues at our [Projects site](https://github.com/panaman/puppet-bro/issues)
