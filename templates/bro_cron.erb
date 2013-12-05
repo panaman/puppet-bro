@@ -6,7 +6,7 @@ def bro_status
   cache_file_dir='/dev/shm'
   cache_file=cache_file_dir+'/bro_state.txt'
   %x(<%= @basedir %>/bin/broctl cron 2>&1)
-  %x(<%= @basedir %>/bro/bin/broctl status 2>&1)
+  %x(<%= @basedir %>/bin/broctl status 2>&1)
   if $?.exitstatus != 0
     status = '1'
   else
