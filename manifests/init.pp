@@ -67,6 +67,7 @@ class bro(
     purge   => true,
     force   => true,
     source  => "puppet:///modules/bro/scripts",
+    ignore  => '.git',
     notify  => Service['wassup_bro'],
   }
   $localbro_default = "puppet:///modules/bro/localbro/$sitepolicy"
@@ -99,6 +100,7 @@ class bro(
     start   => $start,
     restart => $restart,
     stop    => $stop,
+    path    => "$basedir/bin/",
     require => File["$basedir/bin/wassup_bro"],
   }
   $node_conf = "${basedir}/etc/node.cfg"
