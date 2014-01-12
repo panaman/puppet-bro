@@ -88,7 +88,7 @@ To over-ride the default local.bro, modifiy the sitepolicy value.
 Place all Bro scripts into /files/scripts
 
 Puppet will sync everythig you stick in this directory.
-
+````
 It is recommened to put bro scripts in individual directories and use __load__.bro files.
 
 Example:
@@ -97,9 +97,10 @@ script = scripts/something/something.bro
 loader = scripts/something/__load__.bro
 
 Then in your custom.local.bro you can @load scripts/something
+````
 
 ###Other Customizable Variables
-```
+````
 class { 'bro':
   $ensure       = 'running' # Toggle Bro on or off
   $pf_cid       = 'UNSET' # Customize Pfring Cluster ID
