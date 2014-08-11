@@ -4,8 +4,10 @@ Puppet module to manage a Bro Network Security Monitor.
 (To learn more about Bro visit the organizations website: http://www.bro.org)
 
 ###Description
-This module has been tested on Centos 6.4 and Ubuntu 12.04. It should work on any Redhat or Debian based system.
+This module has been tested on Centos 6.5 and Ubuntu 12.04. It should work on any Redhat or Debian based system.
 Redhat systems can install from pre-built bro.org package. Debian systems will need to set pkg_source => 'none', then prebuild and install the package manually.
+
+Bro 2.2 and Bro 2.3 Compatible
 
 If running with pfring you will need to compile custom packages.
 

@@ -1,13 +1,14 @@
 class bro::broctl(
-  $pf_cid = $bro::pf_cid,
-  $basedir = $bro::basedir,
-  $logdir = $bro::logdir,
-  $debug = $bro::debug,
-  $mailto = $bro::mailto,
+  $pf_cid     = $bro::pf_cid,
+  $basedir    = $bro::basedir,
+  $logdir     = $bro::logdir,
+  $debug      = $bro::debug,
+  $mailto     = $bro::mailto,
   $sitepolicy = $bro::sitepolicy,
-  $logexpire = $bro::logexpire,
-  $mindisk = $bro::mindisk,
-  $logrotate = $bro::logrotate,
+  $logexpire  = $bro::logexpire,
+  $mindisk    = $bro::mindisk,
+  $logrotate  = $bro::logrotate,
+  $sitedir    = $bro::sitedir,
   ) inherits bro {
   if ($pf_cid != 'UNSET') {
     $cid = "PFRINGClusterID = $pf_cid"
@@ -18,9 +19,10 @@ class bro::broctl(
     flare => [
       '# PUPPET MANAGED CONFIG',
       "$cid", 
+      "SitePolicyPath = $sitedir",
       "MailTo = $mailto",
       "SitePolicyStandalone = $sitepolicy",
-      "CfgDir = $basedir/etc",
+      "CfgDir = $etc_dir",
       "SpoolDir = $logdir/spool",
       "LogDir = $logdir/logs",
       "LogRotationInterval = $logrotate",

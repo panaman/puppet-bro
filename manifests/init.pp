@@ -20,6 +20,8 @@ class bro(
   $bro_url      = $bro::params::bro_url,
   $type         = $bro::params::type,
   $network      = $bro::params::network,
+  $etc_dir      = $bro::params::etc_dir,
+  $sitedir      = $bro::params::sitedir,
   ) inherits bro::params {
   if ( $ensure == 'running' ) {
     $bro_present = 'present'
@@ -35,50 +37,66 @@ class bro(
     mode    => '0644',
     owner   => '0',
     group   => '0',
-    require => Exec['create_base'],
+  }
+  if ! defined_with_params(Host["$::fqdn"], {'ensure' => "present" }) {
+    host { "$::fqdn":
+      ensure       => present,
+      ip           => "$::hostint_ipv4",
+      host_aliases => ["$::hostname"],
+    }
   }
   exec { 'create_base':
     command => "mkdir -p $basedir",
     creates => $basedir,
     path    => ['/bin','/sbin','/usr/sbin','/usr/bin'],
   }
+  exec { 'create_etc_dir':
+    command => "mkdir -p $etc_dir",
+    creates => $etc_dir,
+    path    => ['/bin','/sbin','/usr/sbin','/usr/bin'],
+  }
+  exec { 'create_site_dir':
+    command => "mkdir -p $sitedir",
+    creates => $sitedir,
+    path    => ['/bin','/sbin','/usr/sbin','/usr/bin'],
+  }
   $if_dirs = [
     "$basedir",
     "$basedir/bin",
+    "$basedir/etc",
     "$basedir/share",
     "$basedir/share/bro",
   ]
   if ! defined_with_params(File[$if_dirs], {'ensure' => 'directory' }) {
-    file { $if_dirs: ensure => directory, }
-  }
-  $bro_dirs = [
-    "$basedir/share/bro/site",
-    "$basedir/etc"
-  ]
-  file { $bro_dirs:
-    ensure  => directory,
-    recurse => true,
-    purge   => true,
-    force   => true,
+    file { $if_dirs: 
+      ensure => directory,
+      require => Exec['create_base'],
+    }
   }
   file { 'scripts':
-    name    => "$basedir/share/bro/site/scripts",
+    name    => "$sitedir/scripts",
     recurse => true,
     purge   => true,
     force   => true,
     source  => "puppet:///modules/bro/scripts",
     ignore  => '.git',
     notify  => Service['wassup_bro'],
+    require => Exec['create_site_dir'],
   }
   $localbro_default = "puppet:///modules/bro/localbro/$sitepolicy"
   $localbro_custom = "puppet:///modules/bro/localbro/local.bro.$::hostname"
-  file { "$basedir/share/bro/site/local.bro":
+  file { "$sitedir/$sitepolicy":
     source => [ "$localbro_custom","$localbro_default" ],
     notify => Service['wassup_bro'],
+    require => [
+      Exec['create_base'],
+      Exec['create_site_dir'],
+    ],
   }
   file { "$basedir/bin/bro_cron":
     mode => '0755',
     content => template('bro/bro_cron.erb'),
+    require => Exec['create_base'],
   }
   cron { 'bro_cron':
     ensure  => $bro_present,
@@ -89,6 +107,7 @@ class bro(
   file { "$basedir/bin/wassup_bro":
     mode => '0755',
     content => template('bro/wassup_bro.erb'),
+    require => Exec['create_base'],
   }
   $status  = "$basedir/bin/wassup_bro status | grep running"
   $start   = "$basedir/bin/wassup_bro start"
@@ -103,7 +122,7 @@ class bro(
     path    => "$basedir/bin/",
     require => File["$basedir/bin/wassup_bro"],
   }
-  $node_conf = "${basedir}/etc/node.cfg"
+  $node_conf = "${etc_dir}/node.cfg"
   if ($type == 'cluster') {
     concat { $node_conf:
       owner   => '0',
@@ -132,17 +151,18 @@ class bro(
       notify  => Service['wassup_bro'],
     }
   }
-  file { "${basedir}/etc/networks.cfg":
+  file { "${etc_dir}/networks.cfg":
     content => template('bro/networks.cfg.erb'),
     notify  => Service['wassup_bro'],
+    require => Exec['create_etc_dir'],
   }
-  file { '/opt/bro/share/bro/site/local-manager.bro':
+  file { "${sitedir}/local-manager.bro":
     content => "# Manager\n",
   }
-  file { '/opt/bro/share/bro/site/local-proxy.bro':
+  file { "${sitedir}/local-proxy.bro":
     content => "# Proxy\n",
   }
-  file { '/opt/bro/share/bro/site/local-worker.bro':
+  file { "${sitedir}/local-worker.bro":
     content => "# Worker\n",
   }
 }
