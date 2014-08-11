@@ -1,10 +1,10 @@
-##! DEFAULT SITE POLICY FROM BRO 2.2
+##! DEFAULT SITE POLICY FROM BRO 2.3
 ##! DO NOT CUSTOMIZE THIS FILE - Create a new file (custom_local.bro)
 ##! Change Puppet sitepolicy variable to match.
 ##! class { 'bro':
 ##!   sitepolicy => 'custom_local.bro',
 ##! }
-##! This file will not be overwritten when upgrading or reinstalling!
+##! The custom file will not be overwritten when upgrading or reinstalling!
 
 # This script logs which scripts were loaded during each run.
 @load misc/loaded-scripts
@@ -34,10 +34,6 @@
 # This adds signatures to detect cleartext forward and reverse windows shells.
 @load-sigs frameworks/signatures/detect-windows-shells
 
-# Uncomment the following line to begin receiving (by default hourly) emails
-# containing all of your notices.
-# redef Notice::policy += { [$action = Notice::ACTION_ALARM, $priority = 0] };
-
 # Load all of the scripts that detect software in various protocols.
 @load protocols/ftp/software
 @load protocols/smtp/software
@@ -63,6 +59,9 @@
 # This script enables SSL/TLS certificate validation.
 @load protocols/ssl/validate-certs
 
+# This script prevents the logging of SSL CA certificates in x509.log
+# @load protocols/ssl/log-hostcerts-only
+
 # Uncomment the following line to check each SSL certificate hash against the ICSI
 # certificate notary service; see http://notary.icsi.berkeley.edu .
 # @load protocols/ssl/notary
@@ -85,3 +84,7 @@
 
 # Detect SHA1 sums in Team Cymru's Malware Hash Registry.
 @load frameworks/files/detect-MHR
+
+# Uncomment the following line to enable detection of the heartbleed attack. Enabling
+# this might impact performance a bit.
+# @load policy/protocols/ssl/heartbleed
