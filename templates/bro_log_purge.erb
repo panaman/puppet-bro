@@ -1,0 +1,3 @@
+#!/bin/bash
+find <%= @logdir %>/logs/2* -type d -ctime <%= @logpurge %> | xargs rm -rf
+exit 0

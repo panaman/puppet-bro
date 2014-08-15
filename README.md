@@ -5,9 +5,11 @@ Puppet module to manage a Bro Network Security Monitor.
 
 ###Description
 This module has been tested on Centos 6.5 and Ubuntu 12.04. It should work on any Redhat or Debian based system.
-Redhat systems can install from pre-built bro.org package. Debian systems will need to set pkg_source => 'none', then prebuild and install the package manually.
+Redhat systems can install from pre-built bro.org package. Debian systems will need to set pkg_source => 'none' or 'repo'. 
+If pkg_source = 'none', then prebuild and install the package manually.
+If set to repo, puppet will assume bro is in a package repository (yum/apt). Using a private package repository server is recommended.
 
-Bro 2.2 and Bro 2.3 Compatible
+Bro 2.3 Compatible
 
 If running with pfring you will need to compile custom packages.
 
@@ -51,12 +53,12 @@ cpus ['1','4'] represents cpus 1,2,3,4 and will also place lb_procs value of 4.
   }
   bro::worker { 'eth1':
     host      => 'sensor01',
-    method    => 'pfring',
+    method    => 'pf_ring',
     cpus      => ['1','4'],
   }
   bro::worker { 'eth2':
     host      => 'sensor01',
-    method    => 'pfring',
+    method    => 'pf_ring',
     procs     => '7',
   }
 ```
@@ -107,12 +109,14 @@ Then in your custom.local.bro you can @load scripts/something
 class { 'bro':
   $ensure       = 'running' # Toggle Bro on or off
   $pf_cid       = 'UNSET' # Customize Pfring Cluster ID
+  $broctl       = 'DEFAULT' # Set to 'CUSTOM' to create custom broctl.cfg, (bro/files/broctl/custom_broctl.cfg)
   $debug        = '0' # Toggle Debug on and off, 0 = Off and 1 = On
   $mailto       = 'root@localhost' # Change notice email
   $sitepolicy   = 'local.bro'# Change the default site policy file. This is useful when customizing bro.
   $logexpire    = '30' # Log Expire days
   $mindisk      = '5' # Min disk threshold
   $logrotate    = '3600' # Rotate logs every 3600 seconds
+  $logpurge     = '30' # Deletes logs older thatn 30 days
   $basedir      = '/opt/bro' # Bro base install dir
   $logdir       = '/var/opt/bro' # Bro Log Dir
   $manager      = $::hostname # Manager host
@@ -123,13 +127,13 @@ class { 'bro':
   $pkg          = 'bro' # Package title
   $pkg_source   = 'bro.org' # Source of package installs from bro.org. Only valid on RedHat based.
                   'repo' # This value assumes you have a custom repository with pre-built packages.
-                  'none' # No package dependency. Asumes you built package from source.
+                  'none' # No package dependency. Asumes you built package from source or manual install
   $type         = 'standalone' # Standalone bro
                 = 'cluster' # Running bro in a cluster
   $network      = $::hostint_ipv4_cidr # Accepts an array of cidr blocks
   $bro_pkg_name = $::osfamily ? {
-    'RedHat' => 'Bro-2.2-Linux-x86_64.rpm',
-    'Debian' => 'Bro-2.2-Linux-x86_64.deb',
+    'RedHat' => 'Bro-2.3-Linux-x86_64.rpm',
+    'Debian' => 'Bro-2.3-Linux-x86_64.deb',
   }
   $bro_url = 'http://www.bro.org/downloads/release'
 }

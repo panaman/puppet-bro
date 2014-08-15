@@ -1,12 +1,14 @@
 class bro(
   $ensure       = $bro::params::ensure,
   $pf_cid       = $bro::params::pf_cid,
+  $broctl       = $bro::params::broctl,
   $debug        = $bro::params::debug,
   $mailto       = $bro::params::mailto,
   $sitepolicy   = $bro::params::sitepolicy,
   $logexpire    = $bro::params::logexpire,
   $mindisk      = $bro::params::mindisk,
   $logrotate    = $bro::params::logrotate,
+  $logpurge     = $bro::params::logpurge,
   $pkg_ensure   = $bro::params::pkg_ensure,
   $pkg_source   = $bro::params::pkg_source,
   $basedir      = $bro::params::basedir,
@@ -97,12 +99,24 @@ class bro(
     mode => '0755',
     content => template('bro/bro_cron.erb'),
     require => Exec['create_base'],
-  }
+  }->
   cron { 'bro_cron':
     ensure  => $bro_present,
     command => "$basedir/bin/bro_cron",
     user    => '0',
     minute  => '*/5',
+  }
+  file { "$basedir/bin/bro_log_purge":
+    mode => '0755',
+    content => template('bro/bro_log_purge.erb'),
+    require => Exec['create_base'],
+  }->
+  cron { 'bro_log_purge':
+    ensure  => $bro_present,
+    command => "$basedir/bin/bro_log_purge",
+    user    => '0',
+    minute  => '0',
+    hour    => '3',
   }
   file { "$basedir/bin/wassup_bro":
     mode => '0755',
