@@ -105,10 +105,10 @@ class bro(
     user    => '0',
     minute  => '*/5',
   }
-  if ( $logpurge == disabled ) {
-    $purge_cron = 'present'
-  } else {
+  if ( $logpurge == 'disabled' ) {
     $purge_cron = 'absent'
+  } else {
+    $purge_cron = 'present'
   }
   file { "$basedir/bin/bro_log_purge":
     ensure  => $purge_cron,
