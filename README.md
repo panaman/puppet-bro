@@ -126,7 +126,7 @@ class { 'bro':
   $pkg_ensure   = 'present' # Ensure bro package, only valid with pkg_source => 'bro.org' or 'repo'
   $pkg          = 'bro' # Package title
   $pkg_source   = 'bro.org' # Source of package installs from bro.org. Only valid on RedHat based.
-                  'repo' # This value assumes you have a custom repository with pre-built packages.
+                  'repo' # This is default. This value assumes you have a custom repository with pre-built packages.
                   'none' # No package dependency. Asumes you built package from source or manual install
   $type         = 'standalone' # Standalone bro
                 = 'cluster' # Running bro in a cluster
