@@ -9,7 +9,6 @@ class bro::params {
   $mindisk      = '5'
   $logrotate    = '3600'
   $logpurge     = 'disabled'
-  $mods         = 'false'
   $basedir      = '/opt/bro'
   $logdir       = '/var/opt/bro'
   $manager      = $::hostname
@@ -18,7 +17,7 @@ class bro::params {
   $proxy        = $::hostname
   $pkg_ensure   = 'present'
   $pkg          = 'bro'
-  $pkg_source   = 'bro.org'
+  $pkg_source   = 'repo'
   $type         = 'standalone'
   $network      = $::hostint_ipv4_cidr 
   $etc_dir      = "$basedir/etc"
