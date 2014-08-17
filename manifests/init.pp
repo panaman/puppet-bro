@@ -13,7 +13,6 @@ class bro(
   $pkg_source   = $bro::params::pkg_source,
   $basedir      = $bro::params::basedir,
   $logdir       = $bro::params::logdir,
-  $logrotation  = $bro::params::logrotation,
   $manager      = $bro::params::manager,
   $proxy        = $bro::params::proxy,
   $worker       = $bro::params::worker,
@@ -86,7 +85,7 @@ class bro(
     require => Exec['create_site_dir'],
   }
   $localbro_default = "puppet:///modules/bro/localbro/$sitepolicy"
-  $localbro_custom = "puppet:///modules/bro/localbro/local.bro.$::hostname"
+  $localbro_custom = "puppet:///modules/bro/localbro/${::hostname}_local.bro"
   file { "$sitedir/$sitepolicy":
     source => [ "$localbro_custom","$localbro_default" ],
     notify => Service['wassup_bro'],
@@ -106,13 +105,19 @@ class bro(
     user    => '0',
     minute  => '*/5',
   }
+  if ( $logpurge == disabled ) {
+    $purge_cron = 'present'
+  } else {
+    $purge_cron = 'absent'
+  }
   file { "$basedir/bin/bro_log_purge":
-    mode => '0755',
+    ensure  => $purge_cron,
+    mode    => '0755',
     content => template('bro/bro_log_purge.erb'),
     require => Exec['create_base'],
   }->
   cron { 'bro_log_purge':
-    ensure  => $bro_present,
+    ensure  => $purge_cron,
     command => "$basedir/bin/bro_log_purge",
     user    => '0',
     minute  => '0',

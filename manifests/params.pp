@@ -8,11 +8,10 @@ class bro::params {
   $logexpire    = '30'
   $mindisk      = '5'
   $logrotate    = '3600'
-  $logpurge     = '30',
+  $logpurge     = 'disabled'
   $mods         = 'false'
   $basedir      = '/opt/bro'
   $logdir       = '/var/opt/bro'
-  $logrotation  = '3600'
   $manager      = $::hostname
   $interface    = $::hostint
   $worker       = $::hostname

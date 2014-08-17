@@ -116,7 +116,7 @@ class { 'bro':
   $logexpire    = '30' # Log Expire days
   $mindisk      = '5' # Min disk threshold
   $logrotate    = '3600' # Rotate logs every 3600 seconds
-  $logpurge     = '30' # Deletes logs older thatn 30 days
+  $logpurge     = 'disabled' # Change to a number like 30 to delete logs older thatn 30 days
   $basedir      = '/opt/bro' # Bro base install dir
   $logdir       = '/var/opt/bro' # Bro Log Dir
   $manager      = $::hostname # Manager host
