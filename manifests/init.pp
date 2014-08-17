@@ -10,6 +10,7 @@ class bro(
   $logrotate    = $bro::params::logrotate,
   $logpurge     = $bro::params::logpurge,
   $pkg_ensure   = $bro::params::pkg_ensure,
+  $pkg          = $bro::params::pkg,
   $pkg_source   = $bro::params::pkg_source,
   $basedir      = $bro::params::basedir,
   $logdir       = $bro::params::logdir,
