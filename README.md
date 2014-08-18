@@ -130,7 +130,7 @@ class { 'bro':
   $type         = 'standalone' # Standalone bro
                 = 'cluster' # Running bro in a cluster
   $network      = $::hostint_ipv4_cidr # Accepts an array of cidr blocks
-  $bro_pkg_name = $::osfamily ? {
+  $bro_pkg_name = $::osfamily ? {               # only valid for RedHat
     'RedHat' => 'Bro-2.3-Linux-x86_64.rpm',
     'Debian' => 'Bro-2.3-Linux-x86_64.deb',
   }
