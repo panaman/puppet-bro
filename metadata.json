@@ -27,25 +27,5 @@
       "name": "puppetlabs/stdlib"
     }
   ],
-  "project_page": "http://www.thunderpoop.com",
-  "checksums": {
-    "README.md": "bfe57b84b99fb4e06d5d692047e19c72",
-    "templates/manager_name.erb": "c223fabc7f4f852b13fb6ac3e3f5d942",
-    "templates/bro_cron.erb": "75ed72af1c12ca6f05a60d98bc443ba8",
-    "manifests/params.pp": "18b46468a2d685eef624b24979168cb3",
-    "manifests/pkg.pp": "ae92b4664a0ba57456ac6afa1dc81390",
-    "spec/spec_helper.rb": "a55d1e6483344f8ec6963fcb2c220372",
-    "files/scripts/readme.txt": "62e1fa89fe12a51463f43f8937d7826d",
-    "templates/node.cfg.erb": "8c8f7131afe1a678eabc1d6747dc5f2d",
-    "templates/wassup_bro.erb": "b6e40ff857b5f8091f62ccbbf21f18f5",
-    "templates/proxy_name.erb": "2c7d647b6718c3ba9c057391d650cc27",
-    "manifests/init.pp": "76601e6c9b6cc82ada080d1d1f7a3a6f",
-    "manifests/worker.pp": "04b9f325cebcea6ec4933af298be24c0",
-    "Modulefile": "4b2e54eb526ed0198b35461000694a77",
-    "templates/worker_name.erb": "73a360684c713c4cc3b6f4515f157cab",
-    "files/localbro/local.bro": "de04e2b790a3c0882000f0b5da738f7c",
-    "templates/networks.cfg.erb": "a7eb1754806978a888e4c31b316c8126",
-    "tests/init.pp": "41b07aca5ff9f51935cedbd0e1cbbbe1",
-    "manifests/broctl.pp": "3b8409421173ff36a16c69062aedbb9b"
-  }
+  "project_page": "https://github.com/panaman/puppet-bro",
 }
