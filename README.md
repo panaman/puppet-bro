@@ -113,7 +113,6 @@ class { 'bro':
   $debug        = '0' # Toggle Debug on and off, 0 = Off and 1 = On
   $mailto       = 'root@localhost' # Change notice email
   $sitepolicy   = 'local.bro'# Change the default site policy file. This is useful when customizing bro.
-  $logexpire    = '30' # Log Expire days
   $mindisk      = '5' # Min disk threshold
   $logrotate    = '3600' # Rotate logs every 3600 seconds
   $logpurge     = 'disabled' # Change to a number like 30 to delete logs older thatn 30 days

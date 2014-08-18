@@ -5,7 +5,6 @@ class bro::params {
   $debug        = '0'
   $mailto       = 'root@localhost'
   $sitepolicy   = 'local.bro'
-  $logexpire    = '30'
   $mindisk      = '5'
   $logrotate    = '3600'
   $logpurge     = 'disabled'

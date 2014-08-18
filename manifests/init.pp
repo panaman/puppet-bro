@@ -5,7 +5,6 @@ class bro(
   $debug        = $bro::params::debug,
   $mailto       = $bro::params::mailto,
   $sitepolicy   = $bro::params::sitepolicy,
-  $logexpire    = $bro::params::logexpire,
   $mindisk      = $bro::params::mindisk,
   $logrotate    = $bro::params::logrotate,
   $logpurge     = $bro::params::logpurge,
@@ -105,24 +104,6 @@ class bro(
     command => "$basedir/bin/bro_cron",
     user    => '0',
     minute  => '*/5',
-  }
-  if ( $logpurge == 'disabled' ) {
-    $purge_cron = 'absent'
-  } else {
-    $purge_cron = 'present'
-  }
-  file { "$basedir/bin/bro_log_purge":
-    ensure  => $purge_cron,
-    mode    => '0755',
-    content => template('bro/bro_log_purge.erb'),
-    require => Exec['create_base'],
-  }->
-  cron { 'bro_log_purge':
-    ensure  => $purge_cron,
-    command => "$basedir/bin/bro_log_purge",
-    user    => '0',
-    minute  => '0',
-    hour    => '3',
   }
   file { "$basedir/bin/wassup_bro":
     mode => '0755',

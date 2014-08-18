@@ -16,6 +16,11 @@ class bro::broctl(
   } else {
     $cid = ""
   }
+  if ( $logpurge == 'disabled' ) {
+    $purge_logs = '# LogExpireInterval = disabled'
+  } else {
+    $purge_logs = "LogExpireInterval = $logpurge"
+  }
   if ( $broctl == 'DEFAULT' ) {
     tps::report { "$basedir/etc/broctl.cfg":
       flare => [
@@ -28,6 +33,7 @@ class bro::broctl(
         "SpoolDir = $logdir/spool",
         "LogDir = $logdir/logs",
         "LogRotationInterval = $logrotate",
+        "$purge_logs",
         "MinDiskSpace = $mindisk",
         "Debug = $debug",
       ],
