@@ -22,8 +22,8 @@ class bro::params {
   $etc_dir      = "$basedir/etc"
   $sitedir      = "$basedir/share/bro/site"
   $bro_pkg_name = $::osfamily ? {
-    'RedHat' => 'Bro-2.3-Linux-x86_64.rpm',
-    'Debian' => 'Bro-2.3-Linux-x86_64.deb',
+    'RedHat' => 'Bro-2.3.1-Linux-x86_64.rpm',
+    'Debian' => 'Bro-2.3.1-Linux-x86_64.deb',
   }
   $bro_url = 'http://www.bro.org/downloads/release'
 }

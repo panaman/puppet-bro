@@ -1,5 +1,5 @@
 name    'panaman-bro'
-version '1.1.0'
+version '1.1.1'
 source 'https://github.com/panaman/puppet-bro'
 author 'Panaman'
 license 'BSD'
