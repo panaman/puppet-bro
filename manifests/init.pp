@@ -75,14 +75,15 @@ class bro(
     }
   }
   file { 'scripts':
-    name    => "$sitedir/scripts",
-    recurse => true,
-    purge   => true,
-    force   => true,
-    source  => "puppet:///modules/bro/scripts",
-    ignore  => '.git',
-    notify  => Service['wassup_bro'],
-    require => Exec['create_site_dir'],
+    name      => "$sitedir/scripts",
+    recurse   => true,
+    purge     => true,
+    force     => true,
+    source    => "puppet:///modules/bro/scripts",
+    ignore    => '.git',
+    show_diff => false,
+    notify    => Service['wassup_bro'],
+    require   => Exec['create_site_dir'],
   }
   $localbro_default = "puppet:///modules/bro/localbro/$sitepolicy"
   $localbro_custom = "puppet:///modules/bro/localbro/${::hostname}_local.bro"
