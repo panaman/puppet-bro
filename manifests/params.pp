@@ -18,7 +18,7 @@ class bro::params {
   $pkg          = 'bro'
   $pkg_source   = 'repo'
   $type         = 'standalone'
-  $network      = $::hostint_ipv4_cidr 
+  $network      = any2array($::hostint_ipv4_cidr) 
   $etc_dir      = "$basedir/etc"
   $sitedir      = "$basedir/share/bro/site"
   $bro_pkg_name = $::osfamily ? {
