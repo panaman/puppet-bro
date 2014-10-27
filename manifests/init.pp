@@ -81,9 +81,9 @@ class bro(
     force     => true,
     source    => "puppet:///modules/bro/scripts",
     ignore    => '.git',
-    show_diff => false,
     notify    => Service['wassup_bro'],
     require   => Exec['create_site_dir'],
+    show_diff => false,
   }
   $localbro_default = "puppet:///modules/bro/localbro/$sitepolicy"
   $localbro_custom = "puppet:///modules/bro/localbro/${::hostname}_local.bro"
@@ -153,6 +153,7 @@ class bro(
       notify  => Service['wassup_bro'],
     }
   }
+  $array_network = any2array($network)
   file { "${etc_dir}/networks.cfg":
     content => template('bro/networks.cfg.erb'),
     notify  => Service['wassup_bro'],

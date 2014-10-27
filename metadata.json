@@ -1,7 +1,7 @@
 {
   "name": "panaman-bro",
   "author": "Panaman",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "source": "https://github.com/panaman/puppet-bro",
   "license": "BSD",
   "types": [
@@ -11,11 +11,11 @@
   "summary": "Bro Network Security Monitor",
   "dependencies": [
     {
-      "version_requirement": ">= 2.0.2",
+      "version_requirement": ">= 2.1.0",
       "name": "panaman/hostint"
     },
     {
-      "version_requirement": ">= 1.0.2",
+      "version_requirement": ">= 1.0.3",
       "name": "panaman/tps"
     },
     {
